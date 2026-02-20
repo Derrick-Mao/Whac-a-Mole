@@ -1,4 +1,4 @@
-//something wrong with gen moles need fix
+// error rmving mole img and score updtate
 
 class GameModel {
   constructor() {
@@ -7,7 +7,7 @@ class GameModel {
     this.timer = 30;
     this.isGameActive = false;
     this.maxMoles = 3;
-    this.activeMoleCnt = 0;
+    this.activeMoleCount = 0;
   }
 
   // init new gameboard state
@@ -276,4 +276,5 @@ class GameController {
 
 const model = new GameModel();
 const view = new GameView();
+
 const controller = new GameController(model, view);
