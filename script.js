@@ -1,5 +1,3 @@
-// error rmving mole img and score updtate
-
 class GameModel {
   constructor() {
     this.holes = [];
@@ -24,7 +22,7 @@ class GameModel {
   }
 
   // get a random hole index that doesn't have a mole
-  getRandomEmptyhole() {
+  getRandomEmptyHole() {
     const emptyHoles = this.holes
       .map((hole, index) => ({ hole, index }))
       .filter(item => !item.hole.hasMole);
@@ -92,7 +90,7 @@ class GameModel {
 
 class GameView {
   constructor() {
-    this.gbGird = document.querySelector("#gameboard-grid");
+    this.gbGrid = document.querySelector("#gameboard-grid");
     this.scoreDisplay = document.querySelector("#score-display");
     this.timerDisplay = document.querySelector("#countdown");
     this.startButton = document.querySelector("#start-btn");
@@ -100,7 +98,7 @@ class GameView {
   }
 
   renderBoard(holes) {
-    this.gbGird.innerHTML = "";
+    this.gbGrid.innerHTML = "";
 
     holes.forEach(hole => {
       const holeElement = document.createElement("div");
@@ -115,11 +113,11 @@ class GameView {
         holeElement.appendChild(img);
       }
 
-      this.gbGird.appendChild(holeElement);
+      this.gbGrid.appendChild(holeElement);
     });
   }
 
-  updatehole(holeId, hasMole) {
+  updateHole(holeId, hasMole) {
     const holeElement = document.querySelector(`.hole[data-id="${holeId}"]`);
     if (!holeElement) return;
     
@@ -158,7 +156,7 @@ class GameView {
   }
 
   bindHoleClick(eventHandler) {
-    this.moleGrid.addEventListener('click', (event) => {
+    this.gbGrid.addEventListener('click', (event) => {
       const hole = event.target.closest('.hole');
       if (!hole) return;
       
@@ -188,19 +186,21 @@ class GameController {
     this.view.renderBoard(this.model.holes);
 
     this.view.bindStartClick(this.handleStartClick.bind(this));
-    this.view.bindholeClick(this.handleholeClick.bind(this));
+    this.view.bindHoleClick(this.handleHoleClick.bind(this));
 
     this.view.updateScore(this.model.score);
     this.view.updateTimer(this.model.timer);
   }
 
   handleHoleClick(holeId) {
+    console.log('Hole clicked:', holeId, 'Game active:', this.model.isGameActive); // Debug log
+
     if (!this.model.isGameActive) return;
     
     // Check if hole has a mole
     if (this.model.holes[holeId] && this.model.holes[holeId].hasMole) {
       this.model.removeMole(holeId);
-      this.view.updatehole(holeId, false);
+      this.view.updateHole(holeId, false);
       
       this.model.incrementScore();
       this.view.updateScore(this.model.score);
@@ -236,11 +236,11 @@ class GameController {
   generateMole() {
     if (!this.model.isGameActive || !this.model.canAddMole()) return;
     
-    const emptyholeId = this.model.getRandomEmptyhole();
+    const emptyholeId = this.model.getRandomEmptyHole();
     
     if (emptyholeId !== -1) {
       this.model.addMole(emptyholeId);
-      this.view.updatehole(emptyholeId, true);
+      this.view.updateHole(emptyholeId, true);
     }
   }
 
@@ -276,5 +276,4 @@ class GameController {
 
 const model = new GameModel();
 const view = new GameView();
-
 const controller = new GameController(model, view);
