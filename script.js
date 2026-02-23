@@ -229,7 +229,7 @@ class GameController {
       this.generateMole();
     }, 1000);
 
-    this.moleInterval = setInterval(() => {
+    this.timerInterval = setInterval(() => {
       this.updateTimer();
     }, 1000);
   }
@@ -268,10 +268,11 @@ class GameController {
   }
 
   clearIntervals() {
-    clearInterval(this.moleInterval);
-    this.moleInterval = null;
-    clearInterval(this.timerInterval);
-    this.timerInterval = null;
+      clearInterval(this.moleInterval);
+      this.moleInterval = null;
+      
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
   }
 }
 
