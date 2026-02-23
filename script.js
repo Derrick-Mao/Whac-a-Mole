@@ -18,7 +18,7 @@ class GameModel {
       });
     }
 
-    this.activeMoleCnt = 0;
+    this.activeMoleCount = 0;
   }
 
   // get a random hole index that doesn't have a mole
@@ -217,6 +217,7 @@ class GameController {
 
     this.view.updateScore(this.model.score);
     this.view.updateTimer(this.model.timer);
+    this.view.resetBoard();
 
     this.startGame();
   }
