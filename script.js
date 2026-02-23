@@ -1,7 +1,8 @@
 class GameModel {
+  #score = 0;
+
   constructor() {
     this.holes = [];
-    this.score = 0;
     this.timer = 30;
     this.isGameActive = false;
     this.maxMoles = 3;
@@ -53,13 +54,13 @@ class GameModel {
     return false;
   }
 
-  incrementScore() {
-    this.score++;
+  get score() {
+    return this.#score;
   }
 
-  resetScore() {
-    this.score = 0;
-  }
+  set score(s) {
+    this.#score = s;
+  } 
 
   decrementTimer() {
     if (this.timer > 0) this.timer--;
@@ -193,8 +194,6 @@ class GameController {
   }
 
   handleHoleClick(holeId) {
-    console.log('Hole clicked:', holeId, 'Game active:', this.model.isGameActive); // Debug log
-
     if (!this.model.isGameActive) return;
     
     // Check if hole has a mole
@@ -202,7 +201,7 @@ class GameController {
       this.model.removeMole(holeId);
       this.view.updateHole(holeId, false);
       
-      this.model.incrementScore();
+      this.model.score = this.model.score + 1;
       this.view.updateScore(this.model.score);
     }
   }
@@ -210,7 +209,7 @@ class GameController {
   handleStartClick() {
     this.stopGame();
 
-    this.model.resetScore();
+    this.model.score = 0;
     this.model.resetTimer();
     this.model.initHoles();
     this.model.setGameActive(true);
@@ -268,11 +267,11 @@ class GameController {
   }
 
   clearIntervals() {
-      clearInterval(this.moleInterval);
-      this.moleInterval = null;
-      
-      clearInterval(this.timerInterval);
-      this.timerInterval = null;
+    clearInterval(this.moleInterval);
+    this.moleInterval = null;
+
+    clearInterval(this.timerInterval);
+    this.timerInterval = null;
   }
 }
 
